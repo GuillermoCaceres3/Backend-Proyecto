@@ -19,8 +19,8 @@ const recipeSchema = new mongoose.Schema({
     steps: [
         {
             stepNumber:{type:String, required:true},
-            instruction:{type:String, required:true},
-        },
+            instruction:{type:String, required:true}
+        }
     ],
     prepTime: {
         type: Number,

@@ -1,4 +1,4 @@
-import * as recipeService from '../services/recipe.service';
+import * as recipeService from '../services/recipe.service.js';
 
 export const createRecipe = async (req, res) => { 
     const {title, description, ingredients, steps, prepTime, cookTime, servings, tags} =  req.body;

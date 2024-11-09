@@ -20,6 +20,10 @@ export const updateUserById = async (id, updates) => {
 export const deleteUserById = async (id) => {
     return await User.findByIdAndDelete(id);
   };
+
+export const findAllUsers = async () => {
+    return await User.find();
+};
   
 export default {
     findUserByEmail,

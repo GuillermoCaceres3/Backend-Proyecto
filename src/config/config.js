@@ -9,4 +9,5 @@ if (process.env.NODE_ENV === 'test') {
 export const config = {
     port: process.env.PORT,
     mongoUri: process.env.MONGO_URI,
+    jwtSecret: process.env.JWT_SECRET,
 }

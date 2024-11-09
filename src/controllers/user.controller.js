@@ -1,8 +1,8 @@
-import * as userService from '../services/user.service';
+import * as userService from '../services/user.service.js';
 import { UserAlreadyExistsError, InvalidCredentialsError } from '../errors/errors.js';
 
 export const register = async (req, res) => {
-    const { username, email, password, photo } = req.body;
+    const { username, email, password, photo,userType } = req.body;
   
     try {
       const result = await userService.registerUser({
@@ -45,4 +45,13 @@ export const register = async (req, res) => {
       res.status(500).json({ message: 'Error logging in', error: error.message });
     }
   };
+
+export const getUsers = async (req, res) => {
+    try {
+        const users = await userService.getAllUsers();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Error getting users', error: error.message });
+    }
+};
   

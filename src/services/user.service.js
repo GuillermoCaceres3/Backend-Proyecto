@@ -43,3 +43,7 @@ export const registerUser = async ({ username, email, password, photo, userType 
       token,
     };
   };
+
+export const getAllUsers = async () => {
+  return await userRepository.findAllUsers();
+};
