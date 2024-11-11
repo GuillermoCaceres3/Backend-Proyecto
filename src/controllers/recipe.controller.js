@@ -21,6 +21,16 @@ export const getRecipes = async (req, res) => {
     }
 }
 
+export const getRecipesByTag = async (req, res) => {
+    const { tag } = req.params;
+    try {
+        const recipes = await recipeService.getRecipesByTag(tag);
+        res.json(recipes);
+    } catch (error) {
+        res.status(500).json({message:'Error getting recipes by tag', error: error.message});
+    }
+}
+
 export const RecipeById = async (req, res) => {
     const { id } = req.params;
     try {

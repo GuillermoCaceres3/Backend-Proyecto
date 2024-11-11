@@ -23,3 +23,7 @@ export const updateRecipe = async (id, recipeData) => {
 export const deleteRecipe = async (id) => {
     return await Recipe.findByIdAndDelete(id);
 };
+
+export const recipeByTag = async (tag) => {
+    return await Recipe.find({ tags: tag });
+}

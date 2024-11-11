@@ -27,7 +27,7 @@ export const registerUser = async ({ username, email, password, photo, userType 
     }
   
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { id: user._id, username: user.username, userType: user.userType },
       config.jwtSecret,
       {
         expiresIn: '1h',
@@ -39,6 +39,7 @@ export const registerUser = async ({ username, email, password, photo, userType 
         id: user._id,
         username: user.username,
         photo: user.photo,
+        userType: user.userType
       },
       token,
     };

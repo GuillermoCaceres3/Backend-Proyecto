@@ -42,3 +42,7 @@ export const updateRecipe = async (id, title, description, ingredients, steps, p
 export const deleteRecipe = async (id) => {
     return await recipeRepository.deleteRecipe(id);
 }
+
+export const getRecipesByTag = async (tag) => {
+    return await recipeRepository.recipeByTag(tag);
+}
