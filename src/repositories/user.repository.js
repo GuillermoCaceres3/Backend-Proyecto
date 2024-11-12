@@ -8,6 +8,10 @@ export const findUserById = async (id) => {
     return await User.findById(id);
   };
 
+export const findUserByGoogleId = async (googleId) => {
+  return await User.findOne({ googleId });
+};
+
 export const createUser = async ({ username, email, password, photo, userType}) => {
     const user = new User({ username, email, password, photo,userType});
     return await user.save();
@@ -30,5 +34,6 @@ export default {
     findUserById,
     createUser,
     updateUserById,
-    deleteUserById
+    deleteUserById,
+    findUserByGoogleId
   };

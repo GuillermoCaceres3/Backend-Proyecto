@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://cdn.icon-icons.com/icons2/1916/PNG/512/person_121780.png",
     },
+    googleId: {
+        type: String,
+        unique: true, 
+        sparse: true, 
+    },
     userType:{
         type: String,
         enum: ["user", "admin","premium"],

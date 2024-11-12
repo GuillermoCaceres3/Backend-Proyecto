@@ -46,6 +46,18 @@ export const register = async (req, res) => {
     }
   };
 
+  export const loginWithGoogle = async (req, res) => {
+    const { token } = req.body;
+  
+    try {
+      const loginData = await userService.loginWithGoogle(token);
+      res.json(loginData);
+    } catch (error) {
+      console.error('Error al iniciar sesión con Google:', error);
+      res.status(401).json({ message: 'Invalid Google token' });
+    }
+  };
+
 export const getUsers = async (req, res) => {
     try {
         const users = await userService.getAllUsers();
