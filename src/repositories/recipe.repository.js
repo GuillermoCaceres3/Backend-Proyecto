@@ -5,9 +5,10 @@ export const createRecipe = async (recipeData) => {
     return (await recipe.save()).populate('author','username email');
 };
 
-export const findAllRecipes = async () => {
-    return await Recipe.find().populate('author', 'username email');
+export const findAllRecipes = async (filter) => {
+    return await Recipe.find(filter);
 };
+
 
 export const findRecipeById = async (id) => {
     return await Recipe.findById(id).populate('author', 'username email');
@@ -27,3 +28,4 @@ export const deleteRecipe = async (id) => {
 export const recipeByTag = async (tag) => {
     return await Recipe.find({ tags: tag });
 }
+

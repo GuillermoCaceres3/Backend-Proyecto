@@ -66,4 +66,20 @@ export const getUsers = async (req, res) => {
         res.status(500).json({ message: 'Error getting users', error: error.message });
     }
 };
+
+export const upgradeToPremiumController = async (req, res) => {
+  const id = req.user.id; 
+  try {
+      const updatedUser = await userService.upgradeUserToPremium(id);
+      res.status(200).json({
+          message: "User upgraded to premium successfully.",
+          user: updatedUser
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: "Failed to upgrade user to premium.",
+          error: error.message
+      });
+  }
+};
   

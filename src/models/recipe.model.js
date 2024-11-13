@@ -43,6 +43,10 @@ const recipeSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    isExclusive: { 
+        type: Boolean,
+        default: false, 
+    }
 },
     {timestamps: true}
 );

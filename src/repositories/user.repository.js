@@ -28,6 +28,10 @@ export const deleteUserById = async (id) => {
 export const findAllUsers = async () => {
     return await User.find();
 };
+
+export const upgradeToPremium = async (id) => {
+  return await User.findByIdAndUpdate(id, { userType: "premium" }, { new: true, runValidators: true });
+};
   
 export default {
     findUserByEmail,
@@ -35,5 +39,6 @@ export default {
     createUser,
     updateUserById,
     deleteUserById,
-    findUserByGoogleId
+    findUserByGoogleId,
+    upgradeToPremium
   };

@@ -1,6 +1,6 @@
 import * as recipeRepository from "../repositories/recipe.repository.js";
 
-export const createNewRecipe = async (title, description, ingredients, steps, prepTime, cookTime, servings, tags, author) => {
+export const createNewRecipe = async (title, description, ingredients, steps, prepTime, cookTime, servings, tags, author,isExclusive) => {
     const newRecipe = await recipeRepository.createRecipe({
         title,
         description,
@@ -11,13 +11,15 @@ export const createNewRecipe = async (title, description, ingredients, steps, pr
         servings,
         tags,
         author,
+        isExclusive,
     });
     return newRecipe;
 };
 
-export const getAllRecipes = async () => {
-    return await recipeRepository.findAllRecipes();
-}
+export const getAllRecipes = async (filter) => {
+    return await recipeRepository.findAllRecipes(filter);
+};
+
 
 export const getRecipeById = async (id) => {
     return await recipeRepository.findRecipeById(id);

@@ -88,3 +88,9 @@ export const loginWithGoogle = async (googleToken) => {
     token: jwtToken,
   };
 };
+
+export const upgradeUserToPremium = async (id) => {
+  return await userRepository.upgradeToPremium(id);
+};
+
+

@@ -1,11 +1,11 @@
 import * as recipeService from '../services/recipe.service.js';
 
 export const createRecipe = async (req, res) => { 
-    const {title, description, ingredients, steps, prepTime, cookTime, servings, tags} =  req.body;
+    const {title, description, ingredients, steps, prepTime, cookTime, servings, tags,isExclusive} =  req.body;
     const author = req.user.id;
 
     try {
-        const newRecipe = await recipeService.createNewRecipe(title, description, ingredients, steps, prepTime, cookTime, servings, tags, author);
+        const newRecipe = await recipeService.createNewRecipe(title, description, ingredients, steps, prepTime, cookTime, servings, tags, author,isExclusive);
         res.status(201).json({message:'Recipe created successfully', recipe: newRecipe});
     } catch (error) {
         res.status(500).json({message:'Error creating recipe', error: error.message});
@@ -14,12 +14,20 @@ export const createRecipe = async (req, res) => {
 
 export const getRecipes = async (req, res) => {
     try {
-        const recipes = await recipeService.getAllRecipes();
+        const userType = req.user?.userType || "guest";
+
+        const filter = (userType === "user" || userType === "guest")
+            ? { isExclusive: false }  
+            : {}; 
+
+        const recipes = await recipeService.getAllRecipes(filter);
+
         res.json(recipes);
     } catch (error) {
-        res.status(500).json({message:'Error getting recipes', error: error.message});
+        res.status(500).json({ message: 'Failed to fetch recipes', error: error.message });
     }
-}
+};
+
 
 export const getRecipesByTag = async (req, res) => {
     const { tag } = req.params;
@@ -43,7 +51,7 @@ export const RecipeById = async (req, res) => {
 
 export const updateRecipe = async (req, res) => {
     const { id } = req.params;
-    const { title, description, ingredients, steps, prepTime, cookTime, servings, tags } = req.body;
+    const { title, description, ingredients, steps, prepTime, cookTime, servings, tags,isExclusive } = req.body;
     const author = req.user.id; 
   
     try {
@@ -57,7 +65,8 @@ export const updateRecipe = async (req, res) => {
         cookTime,
         servings,
         tags,
-        author
+        author,
+        isExclusive
       );
       res.json({ message: 'Recipe updated successfully', recipe: updatedRecipe });
     } catch (error) {
