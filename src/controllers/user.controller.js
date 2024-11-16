@@ -82,4 +82,39 @@ export const upgradeToPremiumController = async (req, res) => {
       });
   }
 };
+
+export const addFavoriteRecipe = async (req, res) => {
+  const userId = req.user.id;
+  const { recipeId } = req.body;
+
+  try {
+      const user = await userService.addFavorite(userId, recipeId);
+      res.json({ message: "Recipe added to favorites", favoriteRecipes: user.favoriteRecipes });
+  } catch (error) {
+      res.status(500).json({ message: "Failed to add recipe to favorites", error: error.message });
+  }
+};
+
+export const removeFavoriteRecipe = async (req, res) => {
+  const userId = req.user.id;
+  const { recipeId } = req.body;
+
+  try {
+      const user = await userService.removeFavorite(userId, recipeId);
+      res.json({ message: "Recipe removed from favorites", favoriteRecipes: user.favoriteRecipes });
+  } catch (error) {
+      res.status(500).json({ message: "Failed to remove recipe from favorites", error: error.message });
+  }
+};
+
+export const getFavoriteRecipes = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+      const user = await userService.getFavorites(userId);
+      res.json({ favoriteRecipes: user.favoriteRecipes });
+  } catch (error) {
+      res.status(500).json({ message: "Failed to fetch favorite recipes", error: error.message });
+  }
+};
   

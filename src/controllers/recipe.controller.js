@@ -84,3 +84,13 @@ export const deleteRecipe = async (req, res) => {
         res.status(500).json({message:'Error deleting recipe', error: error.message});
     }
 }
+
+export const getUserRecipes = async (req, res) => {
+    try {
+        const userId = req.user.id; 
+        const recipes = await recipeService.getRecipesByUser(userId);
+        res.json(recipes);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch user recipes', error: error.message });
+    }
+};

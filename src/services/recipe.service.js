@@ -48,3 +48,7 @@ export const deleteRecipe = async (id) => {
 export const getRecipesByTag = async (tag) => {
     return await recipeRepository.recipeByTag(tag);
 }
+
+export const getRecipesByUser = async (userId) => {
+    return await recipeRepository.findRecipesByAuthor(userId);
+};

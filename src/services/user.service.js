@@ -93,4 +93,16 @@ export const upgradeUserToPremium = async (id) => {
   return await userRepository.upgradeToPremium(id);
 };
 
+export const addFavorite = async (userId, recipeId) => {
+  return await userRepository.addFavoriteRecipe(userId, recipeId);
+};
+
+export const removeFavorite = async (userId, recipeId) => {
+  return await userRepository.removeFavoriteRecipe(userId, recipeId);
+};
+
+export const getFavorites = async (userId) => {
+  return await userRepository.getFavoriteRecipes(userId);
+};
+
 

@@ -32,6 +32,27 @@ export const findAllUsers = async () => {
 export const upgradeToPremium = async (id) => {
   return await User.findByIdAndUpdate(id, { userType: "premium" }, { new: true, runValidators: true });
 };
+
+export const addFavoriteRecipe = async (userId, recipeId) => {
+  return await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { favoriteRecipes: recipeId } }, 
+      { new: true, runValidators: true }
+  ).populate("favoriteRecipes"); 
+};
+
+export const removeFavoriteRecipe = async (userId, recipeId) => {
+  return await User.findByIdAndUpdate(
+      userId,
+      { $pull: { favoriteRecipes: recipeId } },
+      { new: true, runValidators: true }
+  ).populate("favoriteRecipes");
+};
+
+export const getFavoriteRecipes = async (userId) => {
+  return await User.findById(userId).populate("favoriteRecipes");
+};
+
   
 export default {
     findUserByEmail,
@@ -40,5 +61,8 @@ export default {
     updateUserById,
     deleteUserById,
     findUserByGoogleId,
-    upgradeToPremium
+    upgradeToPremium,
+    addFavoriteRecipe,
+    removeFavoriteRecipe,
+    getFavoriteRecipes,
   };

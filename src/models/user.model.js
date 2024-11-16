@@ -29,7 +29,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["user", "admin","premium"],
         default: "user",
-    }
+    },
+    favoriteRecipes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Recipe",
+        }
+    ],
 },
 {timestamps: true}
 );

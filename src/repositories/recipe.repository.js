@@ -29,3 +29,9 @@ export const recipeByTag = async (tag) => {
     return await Recipe.find({ tags: tag });
 }
 
+export const findRecipesByAuthor = async (authorId) => {
+    return await Recipe.find({ author: authorId });
+};
+
+
+
