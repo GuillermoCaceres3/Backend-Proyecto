@@ -105,4 +105,8 @@ export const getFavorites = async (userId) => {
   return await userRepository.getFavoriteRecipes(userId);
 };
 
+export const deleteUser = async (id) => {
+  return await userRepository.deleteUserById(id);
+}
+
 

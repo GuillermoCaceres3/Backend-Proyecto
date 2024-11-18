@@ -117,4 +117,15 @@ export const getFavoriteRecipes = async (req, res) => {
       res.status(500).json({ message: "Failed to fetch favorite recipes", error: error.message });
   }
 };
+
+export const deleteUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      await userService.deleteUser(id);
+      res.json({ message: "User deleted successfully" });
+  } catch (error) {
+      res.status(500).json({ message: "Failed to delete user", error: error.message });
+  }
+}
   

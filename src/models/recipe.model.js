@@ -47,6 +47,10 @@ const recipeSchema = new mongoose.Schema({
     isExclusive: { 
         type: Boolean,
         default: false, 
+    },
+    photos: {
+        type: [String], 
+        required: true, 
     }
 },
     {timestamps: true}
