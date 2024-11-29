@@ -2,15 +2,13 @@ import * as userService from '../services/user.service.js';
 import { UserAlreadyExistsError, InvalidCredentialsError } from '../errors/errors.js';
 
 export const register = async (req, res) => {
-    const { username, email, password, photo,userType } = req.body;
+    const { username, email, password} = req.body;
   
     try {
       const result = await userService.registerUser({
         username,
         email,
-        password,
-        photo,
-        userType
+        password
       });
   
       res.status(201).json({ message: 'User registered successfully', result });
@@ -36,7 +34,10 @@ export const register = async (req, res) => {
   
     try {
       const loginData = await userService.loginUser({ email, password });
-      res.json( loginData );
+      res.status(200).json({
+        message: 'Login successful',
+        token: loginData.token,  
+      });
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
         return res.status(400).json({ message: error.message });

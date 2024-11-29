@@ -38,12 +38,6 @@ export const registerUser = async ({ username, email, password, photo, userType 
     );
   
     return {
-      user: {
-        id: user._id,
-        username: user.username,
-        photo: user.photo,
-        userType: user.userType
-      },
       token,
     };
   };
