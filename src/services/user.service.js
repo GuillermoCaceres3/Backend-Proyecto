@@ -27,34 +27,31 @@ export const registerUser = async ({ username, email, password, photo, userType 
     try {
       const ticket = await client.verifyIdToken({
         idToken: googleToken,
-        audience: config.googleClientId, // Tu CLIENT_ID de Google
+        audience: config.googleClientId, 
       });
   
-      // Obtiene los datos del payload
       const payload = ticket.getPayload();
       const { sub, email, name, picture } = payload;
   
-      // Verifica si el usuario ya existe
       const userExists = await userRepository.findUserByEmail(email);
       if (userExists) {
-        throw new UserAlreadyExistsError(); // Maneja el error si el usuario ya existe
+        throw new UserAlreadyExistsError(); 
       }
   
-      // Si el usuario se registra con Google, asignamos un valor vacío para la contraseña
       const newUser = await userRepository.createUser({
         username: name,
         email,
-        password: "", // Contraseña vacía, no la procesaremos ni la ciframos
+        password: "", 
         photo: picture,
         userType: 'user',
-        googleId: sub, // ID de Google
+        googleId: sub, 
       });
   
       return newUser;
   
     } catch (error) {
       console.error('Error en registerWithGoogle:', error);
-      throw error; // Lanza el error para que sea manejado en el controlador
+      throw error; 
     }
   };
   
