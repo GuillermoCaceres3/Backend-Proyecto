@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         default: "https://cdn.icon-icons.com/icons2/1916/PNG/512/person_121780.png",
     },
     googleId: {
-        type: String,
+        type: String, 
         unique: true, 
         sparse: true, 
     },
