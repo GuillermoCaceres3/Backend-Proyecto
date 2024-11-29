@@ -29,13 +29,43 @@ export const register = async (req, res) => {
     }
   };
 
+  export const registerWithGoogle = async (req, res) => {
+    const { googleToken } = req.body;
+  
+    if (!googleToken) {
+      return res.status(400).json({ message: 'El token de Google es requerido.' });
+    }
+  
+    try {
+      const result = await userService.registerWithGoogle(googleToken);
+  
+      res.status(201).json({ message: 'Usuario registrado exitosamente', result });
+    } catch (error) {
+      if (error instanceof UserAlreadyExistsError) {
+        return res.status(400).json({ message: 'El usuario ya está registrado con Google.' });
+      }
+  
+      if (error.code === 11000) {
+        const field = Object.keys(error.keyValue)[0];
+        const value = error.keyValue[field];
+        return res.status(400).json({
+          message: `El campo ${field} con el valor '${value}' ya está en uso.`,
+        });
+      }
+  
+      console.error('Error en registerWithGoogle:', error);
+      res.status(500).json({ message: 'Error registrando usuario con Google', error: error.message });
+    }
+  };
+  
+
   export const login = async (req, res) => {
     const { email, password } = req.body;
   
     try {
       const loginData = await userService.loginUser({ email, password });
       res.status(200).json({
-        message: 'Login successful',
+        message: 'Login successful', 
         token: loginData.token,  
       });
     } catch (error) {
