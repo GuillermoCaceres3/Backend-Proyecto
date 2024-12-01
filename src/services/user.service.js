@@ -140,4 +140,14 @@ export const deleteUser = async (id) => {
   return await userRepository.deleteUserById(id);
 }
 
+export const getUserById = async (userId) => {
+  const user = await userRepository.findUserById(userId);
+  if (!user) {
+    throw new Error("Usuario no encontrado");
+  }
+  return user;
+};
+
+
+
 

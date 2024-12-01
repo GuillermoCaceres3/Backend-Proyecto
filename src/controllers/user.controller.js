@@ -159,4 +159,15 @@ export const deleteUserById = async (req, res) => {
       res.status(500).json({ message: "Failed to delete user", error: error.message });
   }
 }
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    const user = await userService.getUserById(userId);
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(404).json({ message: error.message });
+  }
+};
   
