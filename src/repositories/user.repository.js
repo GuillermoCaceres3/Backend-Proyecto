@@ -35,11 +35,20 @@ export const upgradeToPremium = async (id) => {
 };
 
 export const addFavoriteRecipe = async (userId, recipeId) => {
-  return await User.findByIdAndUpdate(
-      userId,
-      { $addToSet: { favoriteRecipes: recipeId } }, 
-      { new: true, runValidators: true }
-  ).populate("favoriteRecipes"); 
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { $addToSet: { favoriteRecipes: recipeId } }, 
+    { new: true, runValidators: true }
+  ).populate({
+    path: "favoriteRecipes",
+    populate: {
+      path: "author", 
+      select: "username"  
+}
+    }); 
+
+
+  return user;
 };
 
 export const removeFavoriteRecipe = async (userId, recipeId) => {

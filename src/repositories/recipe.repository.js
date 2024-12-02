@@ -2,11 +2,13 @@ import Recipe from "../models/recipe.model.js";
 
 export const createRecipe = async (recipeData) => {
     const recipe = new Recipe(recipeData);
-    return (await recipe.save()).populate('author','username email');
+    const savedRecipe = await recipe.save();
+    return await savedRecipe.populate('author', 'username');
 };
+  
 
 export const findAllRecipes = async (filter) => {
-    return await Recipe.find(filter);
+    return await Recipe.find(filter).populate('author', 'username');
 };
 
 
@@ -30,7 +32,7 @@ export const recipeByTag = async (tag) => {
 }
 
 export const findRecipesByAuthor = async (authorId) => {
-    return await Recipe.find({ author: authorId });
+    return await Recipe.find({ author: authorId }).populate('author', 'username');
 };
 
 
