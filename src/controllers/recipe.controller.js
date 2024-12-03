@@ -31,8 +31,14 @@ export const getRecipes = async (req, res) => {
 
 export const getRecipesByTag = async (req, res) => {
     const { tag } = req.params;
+    const userType = req.user?.userType || "guest";
+
+    const filter = (userType === "user" || userType === "guest")
+        ? { isExclusive: false }  
+        : {}; 
+
     try {
-        const recipes = await recipeService.getRecipesByTag(tag);
+        const recipes = await recipeService.getRecipesByTag(tag,filter);
         res.json(recipes);
     } catch (error) {
         res.status(500).json({message:'Error getting recipes by tag', error: error.message});

@@ -71,7 +71,7 @@ export const recipeValidationRules = [
     .withMessage("isExclusive should be a boolean value"),
 
   body("photos")
-    .isArray({ min: 3, max: 3 })
+    .isArray({ min: 1, max: 2 })
     .withMessage("Photos must be an array with exactly 3 items"),
 
   body("photos.*")

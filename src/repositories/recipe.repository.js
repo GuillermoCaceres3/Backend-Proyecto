@@ -27,9 +27,12 @@ export const deleteRecipe = async (id) => {
     return await Recipe.findByIdAndDelete(id);
 };
 
-export const recipeByTag = async (tag) => {
-    return await Recipe.find({ tags: tag });
-}
+export const recipeByTag = async (tag, filter = {}) => {
+    return await Recipe.find({ 
+        tags: tag, 
+        ...filter 
+    });
+};
 
 export const findRecipesByAuthor = async (authorId) => {
     return await Recipe.find({ author: authorId }).populate('author', 'username');
