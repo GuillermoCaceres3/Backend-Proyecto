@@ -125,7 +125,12 @@ export const upgradeUserToPremium = async (id) => {
 };
 
 export const addFavorite = async (userId, recipeId) => {
-  return await userRepository.addFavoriteRecipe(userId, recipeId);
+  try {
+    const user = await userRepository.addFavoriteRecipe(userId, recipeId);
+    return user; 
+  } catch (error) {
+    throw new Error("Error al agregar receta a favoritos: " + error.message);
+  }
 };
 
 export const removeFavorite = async (userId, recipeId) => {
@@ -139,5 +144,15 @@ export const getFavorites = async (userId) => {
 export const deleteUser = async (id) => {
   return await userRepository.deleteUserById(id);
 }
+
+export const getUserById = async (userId) => {
+  const user = await userRepository.findUserById(userId);
+  if (!user) {
+    throw new Error("Usuario no encontrado");
+  }
+  return user;
+};
+
+
 
 

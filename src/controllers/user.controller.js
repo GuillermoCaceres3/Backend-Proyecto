@@ -119,12 +119,20 @@ export const addFavoriteRecipe = async (req, res) => {
   const { recipeId } = req.body;
 
   try {
-      const user = await userService.addFavorite(userId, recipeId);
-      res.json({ message: "Recipe added to favorites", favoriteRecipes: user.favoriteRecipes });
+    const user = await userService.addFavorite(userId, recipeId);
+
+    res.json({
+      message: "Receta agregada a favoritos",
+      favoriteRecipes: user.favoriteRecipes  
+    });
   } catch (error) {
-      res.status(500).json({ message: "Failed to add recipe to favorites", error: error.message });
+    res.status(500).json({
+      message: "Failed to add recipe to favorites",
+      error: error.message
+    });
   }
 };
+
 
 export const removeFavoriteRecipe = async (req, res) => {
   const userId = req.user.id;
@@ -159,4 +167,15 @@ export const deleteUserById = async (req, res) => {
       res.status(500).json({ message: "Failed to delete user", error: error.message });
   }
 }
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    const user = await userService.getUserById(userId);
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(404).json({ message: error.message });
+  }
+};
   

@@ -12,7 +12,7 @@ router.get("/",optionalAuthMiddleware, getRecipes);
 router.get('/my-recipes',authMiddleware,getUserRecipes);
 router.get("/:id", authMiddleware,checkAdmin,RecipeById);
 router.put("/:id", authMiddleware,checkAdmin, recipeValidationRules, validate, updateRecipe);
-router.delete("/:id", authMiddleware,checkAdmin, deleteRecipe);
+router.delete("/:id", authMiddleware,deleteRecipe);
 router.get("/tag/:tag",getRecipesByTag);
 
 export default router;

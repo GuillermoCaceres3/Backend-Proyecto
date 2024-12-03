@@ -1,5 +1,5 @@
 import express from "express";
-import {register, login,getUsers, loginWithGoogle,addFavoriteRecipe,removeFavoriteRecipe,getFavoriteRecipes,deleteUserById,registerWithGoogle} from "../controllers/user.controller.js";
+import {register, login,getUsers, loginWithGoogle,addFavoriteRecipe,removeFavoriteRecipe,getFavoriteRecipes,deleteUserById,registerWithGoogle,getUserProfile} from "../controllers/user.controller.js";
 import { userLoginValidationRules,userRegisterValidationRules } from "../validators/user.validator.js";
 import validate from "../middlewares/validation.middleware.js";
 import checkAdmin from "../middlewares/checkAdmin.middleware.js";
@@ -16,5 +16,6 @@ router.post("/favorites", authMiddleware, addFavoriteRecipe);
 router.delete("/favorites", authMiddleware, removeFavoriteRecipe); 
 router.get("/favorites", authMiddleware, getFavoriteRecipes); 
 router.delete("/:id", authMiddleware,checkAdmin, deleteUserById); 
+router.get("/me",authMiddleware,getUserProfile);
 
 export default router;  
