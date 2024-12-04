@@ -1,16 +1,40 @@
 import * as recipeService from '../services/recipe.service.js';
 
-export const createRecipe = async (req, res) => { 
-    const {title, description, ingredients, steps, prepTime, cookTime, servings, tags,isExclusive,photos} =  req.body;
-    const author = req.user.id;
+export const createRecipe = async (req, res) => {
+
+
+    const { title, description, ingredients, steps, prepTime, cookTime, servings, tags, isExclusive } = req.body;
+    const author = req.user.id; 
+
+
 
     try {
-        const newRecipe = await recipeService.createNewRecipe(title, description, ingredients, steps, prepTime, cookTime, servings, tags, author,isExclusive,photos);
-        res.status(201).json({message:'Recipe created successfully', recipe: newRecipe});
+
+    
+        const photos = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+
+
+        const newRecipe = await recipeService.createNewRecipe(
+            title,
+            description,
+            ingredients, 
+            steps,        
+            prepTime,
+            cookTime,
+            servings,
+            tags, 
+            author,
+            isExclusive, 
+            photos 
+        );
+
+        res.status(201).json({ message: 'Receta creada con éxito', recipe: newRecipe });
     } catch (error) {
-        res.status(500).json({message:'Error creating recipe', error: error.message});
+        console.error('Error al crear la receta:', error);
+        res.status(500).json({ message: 'Error al crear la receta', error: error.message });
     }
-};
+
+}
 
 export const getRecipes = async (req, res) => {
     try {

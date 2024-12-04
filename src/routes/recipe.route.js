@@ -5,10 +5,11 @@ import validate from "../middlewares/validation.middleware.js";
 import checkAdmin from "../middlewares/checkAdmin.middleware.js";
 import { recipeValidationRules } from "../validators/recipe.validator.js";
 import checkPremium from "../middlewares/checkPremium.middleware.js"
+import upload from "../middlewares/photos.middleware.js";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, recipeValidationRules, validate, createRecipe);
+router.post("/", authMiddleware, upload.array('photos'),recipeValidationRules, validate, createRecipe);
 router.get("/",optionalAuthMiddleware, getRecipes);
 router.get('/my-recipes',authMiddleware,getUserRecipes);
 router.get("/:id", authMiddleware,checkAdmin,RecipeById);
