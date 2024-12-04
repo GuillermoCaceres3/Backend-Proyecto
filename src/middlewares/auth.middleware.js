@@ -38,7 +38,7 @@ export const optionalAuthMiddleware = async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
         req.user = undefined;
-        return next();
+        return next(); 
     }
 
     try {
