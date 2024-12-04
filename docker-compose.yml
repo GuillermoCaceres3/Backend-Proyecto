@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
+      - PAYPAL_SECRET=${PAYPAL_SECRET}
+      - PAYPAL_API=${PAYPAL_API}
+      - PAYPAL_PRODUCT_ID=${PAYPAL_PRODUCT_ID}
+      - PAYPAL_PLAN_ID=${PAYPAL_PLAN_ID}
+      - DEFAULT_EMAIL_ADDRESS=${DEFAULT_EMAIL_ADDRESS}
+      - HOST=${HOST}
+      - RETURN_URL=${RETURN_URL}
+      - CANCEL_URL=${CANCEL_URL}
+
+  db:
+    image: mongo:latest
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
