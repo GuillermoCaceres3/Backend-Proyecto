@@ -56,3 +56,41 @@ export const createPayPalSubscription = async (subscriptionData, auth) => {
         throw error;
     }
 };
+
+export const createPayPalOrder = async (orderData, auth) => {
+
+    try {
+        const { data } = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, JSON.stringify(orderData),
+            {
+                headers: {
+                    Authorization: `Bearer ${auth.bearer}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        return data;
+    } catch (error) {
+        console.error("Error creating PayPal order:", error.message);
+        throw new Error("Failed to create PayPal order");
+    }
+};
+
+export const capturePayPalOrder = async (token, accessToken) => {
+    try {
+        const { data } = await axios.post(
+            `${process.env.PAYPAL_API}/v2/checkout/orders/${token}/capture`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        
+    } catch (error) {
+        console.error("Error capturing PayPal order:", error.response?.data || error.message);
+        throw new Error("Failed to capture PayPal order");
+    }
+};

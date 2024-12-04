@@ -1,13 +1,13 @@
-import { createPayPalProduct, createPayPalPlan, createPayPalSubscription } from '../services/paypal.service.js';
+import { createPayPalProduct, createPayPalPlan, createPayPalSubscription, createPayPalOrder, capturePayPalOrder } from '../services/paypal.service.js';
 
 export const createProduct = async (req, res) => {
     const product = {
-        "name": "Subscripción SazonBox",
-        "type": "DIGITAL",
-        "description": "Subscripción para contenido exclusivo en SazonBox",
-        "category": "FOOD_DRINK_AND_NUTRITION",
-        "image_url": "https://drive.google.com/uc?id=1k8NIWnzf8z8XDCQw218QLs6Z_Ve6sseM",
-        "home_url": "https://sazonbox.me"
+        name: "Subscripción SazonBox",
+        type: "DIGITAL",
+        description: "Subscripción para contenido exclusivo en SazonBox",
+        category: "FOOD_DRINK_AND_NUTRITION",
+        image_url: "https://drive.google.com/uc?id=1k8NIWnzf8z8XDCQw218QLs6Z_Ve6sseM",
+        home_url: "https://sazonbox.me"
     };
 
     try {
@@ -74,7 +74,7 @@ export const createPlan = async (req, res) => {
 export const generateSubscription = async (req, res) => {
     const { email_address } = req.body;
 
-    const startTime = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // Start in 5 minutes from now
+    const startTime = new Date(Date.now() + 1 * 60 * 1000).toISOString(); // Start in 1 minute from now
 
     const subscription = {
         plan_id: process.env.PAYPAL_PLAN_ID,
@@ -120,3 +120,80 @@ export const generateSubscription = async (req, res) => {
         });
     }
 };
+
+
+export const createOrder = async (req, res) => {
+
+    const { amount } = req.body;
+
+    if (!amount || isNaN(amount)) {
+        return res.status(400).json({ message: "Invalid or missing 'amount' in request body." });
+    }
+
+    try {
+        const order = {
+            intent: "CAPTURE",
+            purchase_units: [
+                {
+                    amount: {
+                        currency_code: "USD",
+                        value: amount,
+                    },
+                },
+            ],
+            application_context: {
+                brand_name: "SazonBox",
+                landing_page: "NO_PREFERENCE",
+                user_action: "PAY_NOW",
+                return_url: `${process.env.HOST}/capture-order`,
+                cancel_url: `${process.env.HOST}/cancel-payment`,
+            },
+        };
+
+        const accessToken = req.auth;
+        const response = await createPayPalOrder(order, accessToken);
+
+        const approvalUrl = response.links.find(link => link.rel === 'approve')?.href;
+
+        if (!approvalUrl) {
+            return res.status(500).json({
+                message: 'Approval URL not found in PayPal response',
+                details: response,
+            });
+        }
+
+        res.status(201).json({
+            message: 'Order created successfully',
+            data: { approvalUrl },
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json("Something goes wrong");
+    }
+};
+
+export const captureOrder = async (req, res) => {
+    const { token } = req.query; 
+    const accessToken = req.auth; 
+
+    if (!token) {
+        return res.status(400).json({ message: "Order token is required" });
+    }
+
+    try {
+        const response = await capturePayPalOrder(token, accessToken);
+
+        console.log("PayPal Order Captured:", response);
+
+        res.send("Order captured successfully");
+
+        res.status(200).json(response); 
+    } catch (error) {
+        console.error("Failed to capture PayPal order:", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+export const cancelPayment = (req, res) => res.redirect("/");
+
